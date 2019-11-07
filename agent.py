@@ -25,17 +25,13 @@ class DQNAgent:
         self.model = load_model("models/" + model_name) if is_eval else self._build_model()
     
     def _build_model(self):
-        # Sequential() creates the foundation of the layers.
         model = Sequential()
-        # 'Dense' is the basic form of a neural network layer
-        # Input Layer of state size(4) and Hidden Layer with 24 nodes
-        model.add(Dense(24, input_dim=self.state_size, activation='relu'))
-        # Hidden layer with 24 nodes
-        model.add(Dense(24, activation='relu'))
-        # Output Layer with # of actions: 2 nodes (left, right)
-        model.add(Dense(self.action_size, activation='linear'))
-        # Create the model based on the information above
-        model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
+        model.add(Dense(units=64, input_dim=self.state_size, activation="relu"))
+        model.add(Dense(units=32, activation="relu"))
+        model.add(Dense(units=8, activation="relu"))
+        model.add(Dense(self.action_size, activation="linear"))
+        model.compile(loss="mse", optimizer=Adam(lr=0.001))
+
         return model
 
     def remember(self, state, action, reward, next_state, done):
